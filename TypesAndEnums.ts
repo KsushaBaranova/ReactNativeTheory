@@ -47,20 +47,20 @@ let person = {
   age: 25,
 };
 
-function printEnum(en): string {
-  let str: string = "";
-  for (let key in en) {
-    str += en[key] + " ";
+function printEnum(argument: object): string {
+  let colors: string = "";
+  for (let key in argument) {
+    colors += argument[key] + " ";
   }
-  return str;
+  return colors;
 }
 
-function printObject(obj): string {
-  let str: string = "";
+function printObject(obj: object): string {
+  let info: string = "";
   for (let key in obj) {
-    str += key + ":" + obj[key] + "\n";
+    info += key + ":" + obj[key] + "\n";
   }
-  return str;
+  return info;
 }
 
 console.log(`booleanType = ${booleanType}
@@ -88,7 +88,10 @@ const a: number = 5;
 const b: number = 7;
 const eight: string = "8";
 
-function sumOfNumbers(firstNumber, secondNumber): number {
+function sumOfNumbers(
+  firstNumber: number | string,
+  secondNumber: number | string
+): number {
   if (typeof firstNumber !== "number" || typeof secondNumber !== "number") {
     console.log("Incorrect input!");
   } else {
@@ -107,8 +110,8 @@ console.log(sumOfNumbers(a, eight));
 
 let A: any = "example";
 
-function isTrue(arg: any): boolean {
-  if (!arg) {
+function isTrue(argument: any): boolean {
+  if (!argument) {
     return false;
   } else {
     return true;
@@ -125,18 +128,18 @@ console.log(isTrue(A));
 */
 
 function combine(
-  firstArg: string | number,
-  secondArg: number | string,
-  thirdArg: string
+  firstArgument: string | number,
+  secondArgument: number | string,
+  thirdArgument: string
 ): string | number {
   if (
-    thirdArg == "as-number" &&
-    typeof firstArg == "number" &&
-    typeof secondArg == "number"
+    thirdArgument == "as-number" &&
+    typeof firstArgument == "number" &&
+    typeof secondArgument == "number"
   ) {
-    return firstArg + secondArg;
-  } else if (thirdArg == "as-string") {
-    return firstArg + "" + secondArg;
+    return firstArgument + secondArgument;
+  } else if (thirdArgument == "as-string") {
+    return firstArgument + "" + secondArgument;
   } else {
     return "Incorrect input!";
   }
@@ -157,8 +160,8 @@ console.log(combine(4, 5, "as-sd"));
 let B: any = "example";
 const error: [number, string] = [123, "Value is falsy!"];
 
-function isFalsy(arg): void {
-  if (!arg) {
+function isFalsy(argument: any): void {
+  if (!argument) {
     console.log(`Error: ${error[0]} - ${error[1]}`);
   } else {
     return;
@@ -176,7 +179,7 @@ console.log(isFalsy(B));
     ~ Вывести в консоль название свойства и его значение. Каждое свойство на новой строке.
 */
 
-const enum Role {
+enum Role {
   Admin,
   Author,
   Moderator,
@@ -204,7 +207,7 @@ printInfo(personInfo);
 
 */
 
-const enum RoleString {
+enum RoleString {
   Admin = "Admin",
   Author = "Author",
   Moderator = "Moderator",
@@ -233,7 +236,14 @@ let person3 = {
 
 let listOfPerson = [person1, person2, person3];
 
-function printNameAndRole(persons): void {
+function printNameAndRole(
+  persons: Array<{
+    name: string;
+    age: string;
+    gender: string;
+    role: RoleString;
+  }>
+): void {
   for (let i = 0; i < persons.length; i++) {
     console.log(`My name is ${persons[i].name}. I am ${persons[i].role}`);
   }
@@ -256,11 +266,11 @@ function addAndHandle(
   firstNumber: number,
   secondNumber: number,
   callback: Function
-) {
-  return callback(sumOfNumbers(firstNumber, secondNumber));
+): void {
+  callback(sumOfNumbers(firstNumber, secondNumber));
 }
 
-addAndHandle(10, 20, (result) => {
+addAndHandle(10, 20, (result: number) => {
   console.log(result);
 });
 
@@ -280,19 +290,19 @@ function infRec(): never {
     ~ Вывести в консоль города с индексами. 
 */
 
-enum Cities {
+enum City {
   Kharkiv = "61000-62480",
   Kiev = "01001-06999",
   Lviv = "79000",
   Odessa = "65000-65480",
 }
 
-function getIndexCities(city: string): string {
-  return Cities[city];
+function getIndexFromCity(city: string): string {
+  return City[city];
 }
 
-for (let name in Cities) {
-  console.log(`${name} - ${getIndexCities(name)}`);
+for (let name in City) {
+  console.log(`${name} - ${getIndexFromCity(name)}`);
 }
 
 /*
@@ -305,12 +315,12 @@ let ukr: string = "Ukraine";
 let pak: string = "Pakistan";
 let deu: string = "America";
 let egy: string = "Egypt";
-let alb: string = "Albania";
+let alb: string = "albania";
 
 let list: string[] = [ukr, pak, deu, egy, alb];
 
 for (let i = 0; i < list.length; i++) {
-  if (list[i].indexOf("A") > -1) {
+  if (list[i].toUpperCase().indexOf("A") === 0) {
     console.log(list[i]);
   }
 }
@@ -350,7 +360,7 @@ let personInfoObj = {
 function without(obj: object, type: string): object {
   let objCopy = {};
   for (let key in obj) {
-    if (typeof obj[key] == type) continue;
+    if (typeof obj[key] === type) continue;
     objCopy[key] = obj[key];
   }
   return objCopy;
