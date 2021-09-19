@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Text, TouchableOpacity} from 'react-native';
-import styles from '../styles/FilledButton';
+import styles from './styles';
 
 export interface FilledButtonProps {
   title: string;

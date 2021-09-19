@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {ImageSourcePropType} from 'react-native';
-import {Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {Image, TouchableOpacity} from 'react-native';
+import styles from './styles';
 
 export interface SocialNetworkButtonProps {
   image: ImageSourcePropType;
@@ -15,16 +16,5 @@ class SocialNetworkButton extends Component<SocialNetworkButtonProps> {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  touchableOpacityStyle: {
-    width: 45,
-    height: 45,
-    backgroundColor: 'rgb(255, 103, 97)',
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
 
 export default SocialNetworkButton;

@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import {Text} from 'react-native';
-import CredentialTextInput from '../components/CredentialTextInput';
-import FilledButton from '../components/FilledButton';
-import SocialNetworkButtonsForm from '../components/SocialNetworkButtonsForm';
-import TextButton from '../components/TextButton';
+import CredentialTextInput from '../../components/CredentialTextInput/CredentialTextInput';
+import FilledButton from '../../components/FilledButton/FilledButton';
+import SocialNetworkButtonsForm from '../../components/SocialNetworkButtonsForm/SocialNetworkButtonsForm';
+import TextButton from '../../components/TextButton/TextButton';
 import {Stack} from 'react-native-spacing-system';
-import BackgroundForm from '../components/BackgroundForm';
-import styles from '../styles/BackgroundForm';
+import BackgroundForm from '../../components/BackgroundForm/BackgroundForm';
+import styles from '../../components/BackgroundForm/styles';
 
 interface LoginScreenState {
   email: string;

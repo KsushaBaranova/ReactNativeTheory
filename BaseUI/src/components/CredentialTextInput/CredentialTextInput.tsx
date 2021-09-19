@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {StyleSheet, TextInput} from 'react-native';
+import {TextInput} from 'react-native';
+import styles from './styles';
 
 export interface CredentialTextInputProps {
   placeholder: string;
@@ -24,15 +25,5 @@ class CredentialTextInput extends Component<CredentialTextInputProps> {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  textInputStyle: {
-    borderBottomWidth: 1,
-    borderColor: 'rgb(181, 182, 221)',
-    width: '100%',
-    fontSize: 15,
-    paddingVertical: 8,
-  },
-});
 
 export default CredentialTextInput;

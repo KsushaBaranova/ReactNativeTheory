@@ -9,8 +9,8 @@
  */
 
 import React, {Component} from 'react';
-import LoginScreen from './src/screens/LoginScreen';
-import ProfileScreen from './src/screens/ProfileScreen';
+import LoginScreen from './src/screens/LoginScreen/LoginScreen';
+import ProfileScreen from './src/screens/ProfileScreen/ProfileScreen';
 
 class App extends Component {
   render() {

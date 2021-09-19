@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
-import BackgroundForm from '../components/BackgroundForm';
-import CredentialTextInput from '../components/CredentialTextInput';
-import FilledButton from '../components/FilledButton';
+import BackgroundForm from '../../components/BackgroundForm/BackgroundForm';
+import CredentialTextInput from '../../components/CredentialTextInput/CredentialTextInput';
+import FilledButton from '../../components/FilledButton/FilledButton';
 import {Stack} from 'react-native-spacing-system';
-import Avatar from '../components/Avatar';
+import Avatar from '../../components/Avatar/Avatar';
 import ImagePicker from 'react-native-image-crop-picker';
-import FollowBlock from '../components/FollowBlock';
-import {EmitterSubscription, Keyboard, StyleSheet, View} from 'react-native';
+import FollowBlock from '../../components/FollowBlock/FollowBlock';
+import {EmitterSubscription, Keyboard, View} from 'react-native';
+import styles from './styles';
+import styleProps from './styles';
 
 interface ProfileScreenState {
   userName: string;
@@ -16,19 +18,19 @@ interface ProfileScreenState {
   following: number;
   isEditMode: boolean;
   isKeyboardOpen: boolean;
+  errorMessage: string;
 }
 
 class ProfileScreen extends Component<{}, ProfileScreenState> {
   state = {
     userName: '',
     email: '',
-    image: {
-      uri: '/Users/student/Desktop/ReactNative/BaseUI/src/images/profile.png',
-    },
+    image: require('../../images/profile.png'),
     followers: 250,
     following: 1236,
     isEditMode: false,
     isKeyboardOpen: false,
+    errorMessage: '',
   };
 
   showSubscription!: EmitterSubscription;
@@ -48,7 +50,7 @@ class ProfileScreen extends Component<{}, ProfileScreenState> {
     this.hideSubscription.remove();
   }
 
-  onOrOffEditMode = () => {
+  toggleEditMode = () => {
     this.setState({isEditMode: !this.state.isEditMode});
   };
 
@@ -59,7 +61,7 @@ class ProfileScreen extends Component<{}, ProfileScreenState> {
       image: this.state.image,
     });
 
-    this.onOrOffEditMode();
+    this.toggleEditMode();
   };
 
   chooseAvatar = () => {
@@ -78,12 +80,12 @@ class ProfileScreen extends Component<{}, ProfileScreenState> {
     return (
       <BackgroundForm
         title={'My profile'}
-        titleButton={this.state.isEditMode ? '' : 'Edit'}
-        color={'white'}
-        align={'flex-end'}
-        fontSize={15}
-        onPress={this.onOrOffEditMode}
-        styleHeight={styleProps.forBackground}>
+        titleButton={'Edit'}
+        isEditMode={this.state.isEditMode}
+        containerStyle={styleProps.containerStyle}
+        labelStyle={styleProps.labelStyle}
+        onPress={this.toggleEditMode}
+        styleHeight={styles.forBackground}>
         <Avatar
           avatar={this.state.image}
           onPress={this.chooseAvatar}
@@ -118,35 +120,22 @@ class ProfileScreen extends Component<{}, ProfileScreenState> {
         />
         <Stack size={40} />
 
-        {this.state.isEditMode ? (
-          <FilledButton
-            styleButton={{
-              marginTop: this.state.isKeyboardOpen ? '20%' : '110%',
-            }}
-            title={'Update profile'}
-            onPress={this.updateInfo}
-          />
-        ) : (
-          <FilledButton
-            styleButton={styleProps.forFailetButton}
-            title={'Show state'}
-            onPress={() => console.log(this.state)}
-          />
-        )}
+        <View style={styles.containerForFilledButton}>
+          {this.state.isEditMode ? (
+            <FilledButton title={'Update profile'} onPress={this.updateInfo} />
+          ) : (
+            <FilledButton
+              styleButton={styles.forFilledButton}
+              title={'Show state'}
+              onPress={() => console.log(this.state)}
+            />
+          )}
+        </View>
 
-        <Stack size={30} />
+        <Stack size={15} />
       </BackgroundForm>
     );
   }
 }
-
-const styleProps = StyleSheet.create({
-  forBackground: {
-    height: '100%',
-  },
-  forFailetButton: {
-    marginTop: '75%',
-  },
-});
 
 export default ProfileScreen;

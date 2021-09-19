@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {TouchableOpacity, Image, ImageBackground} from 'react-native';
-import styles from '../styles/Avatar';
+import styles from './styles';
 
 interface AvatarProps {
   avatar: object;
@@ -22,7 +22,7 @@ class Avatar extends Component<AvatarProps> {
           {this.props.isEditMode ? (
             <Image
               style={styles.iconStyle}
-              source={require('../images/photo.png')}
+              source={require('../../images/photo.png')}
             />
           ) : null}
         </ImageBackground>
