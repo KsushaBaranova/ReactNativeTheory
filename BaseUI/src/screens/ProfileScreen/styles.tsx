@@ -1,10 +1,10 @@
 import {StyleSheet} from 'react-native';
 
 const styleProps = StyleSheet.create({
-  forBackground: {
+  backgroundStyle: {
     height: '100%',
   },
-  forFilledButton: {},
+  filledButtonStyle: {},
   containerStyle: {
     alignSelf: 'flex-end',
   },
@@ -18,6 +18,10 @@ const styleProps = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'flex-end',
+  },
+  textInputStyles: {
+    color: 'black',
+    height: 40,
   },
 });
 

@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import {Text, TouchableOpacity} from 'react-native';
+import {Text, TextStyle, TouchableOpacity, ViewStyle} from 'react-native';
 
 export interface TextButtonProps {
   title?: string;
-  containerStyle: object;
-  labelStyle: object;
+  containerStyle?: ViewStyle;
+  labelStyle?: TextStyle;
   onPress?: () => void;
 }
 

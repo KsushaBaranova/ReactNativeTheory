@@ -20,6 +20,18 @@ export const styles = StyleSheet.create({
     color: 'rgb(181, 182, 221)',
     fontSize: 13,
   },
+  containerStylePassword: {
+    alignSelf: 'flex-start',
+  },
+  labelStylePassword: {
+    color: 'rgb(64, 80, 164)',
+  },
+  containerStyleAccount: {
+    alignSelf: 'center',
+  },
+  labelStyleAccount: {
+    color: 'rgb(181, 182, 221)',
+  },
 });
 
 export default styles;

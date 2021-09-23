@@ -1,5 +1,11 @@
 import React, {Component} from 'react';
-import {View, ImageBackground, KeyboardAvoidingView} from 'react-native';
+import {
+  View,
+  ImageBackground,
+  KeyboardAvoidingView,
+  ViewStyle,
+  TextStyle,
+} from 'react-native';
 import Header from '../Header/Header';
 import styles from './styles';
 
@@ -8,13 +14,15 @@ const image = {
 };
 
 export interface BackgroundFormProps {
-  isEditMode: boolean;
+  isEditMode?: boolean;
   titleButton?: string;
   title?: string;
-  containerStyle: object;
-  labelStyle: object;
+  containerStyle?: ViewStyle;
+  labelStyle?: TextStyle;
   onPress?: () => void;
-  styleHeight?: object;
+  styleHeight?: ViewStyle;
+  // isViewSearch?: boolean;
+  prepearComponent?: JSX.Element;
 }
 
 class BackgroundForm extends Component<BackgroundFormProps> {
@@ -28,6 +36,7 @@ class BackgroundForm extends Component<BackgroundFormProps> {
           containerStyle={this.props.containerStyle}
           labelStyle={this.props.labelStyle}
           onPress={this.props.onPress}
+          prepearComponent={this.props.prepearComponent}
         />
 
         <KeyboardAvoidingView

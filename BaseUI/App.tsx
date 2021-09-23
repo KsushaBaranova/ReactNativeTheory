@@ -9,12 +9,14 @@
  */
 
 import React, {Component} from 'react';
+import AddPeopleScreen from './src/screens/AddPeopleScreen/AddPeopleScreen';
 import LoginScreen from './src/screens/LoginScreen/LoginScreen';
 import ProfileScreen from './src/screens/ProfileScreen/ProfileScreen';
+import SubscribersScreen from './src/screens/SubscribersScreen/SubscribersScreen';
 
 class App extends Component {
   render() {
-    return <ProfileScreen />;
+    return <AddPeopleScreen />;
   }
 }
 

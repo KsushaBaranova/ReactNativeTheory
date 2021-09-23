@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Text} from 'react-native';
 import CredentialTextInput from '../../components/CredentialTextInput/CredentialTextInput';
 import FilledButton from '../../components/FilledButton/FilledButton';
 import SocialNetworkButtonsForm from '../../components/SocialNetworkButtonsForm/SocialNetworkButtonsForm';
@@ -7,6 +6,7 @@ import TextButton from '../../components/TextButton/TextButton';
 import {Stack} from 'react-native-spacing-system';
 import BackgroundForm from '../../components/BackgroundForm/BackgroundForm';
 import styles from '../../components/BackgroundForm/styles';
+import {Text} from 'react-native';
 
 interface LoginScreenState {
   email: string;
@@ -38,8 +38,8 @@ class LoginScreen extends Component<{}, LoginScreenState> {
         <Stack size={30} />
         <TextButton
           title="Forget password?"
-          align={'flex-start'}
-          color={'rgb(64, 80, 164)'}
+          containerStyle={styles.containerStylePassword}
+          labelStyle={styles.labelStylePassword}
         />
         <Stack size={40} />
         <FilledButton
@@ -55,8 +55,8 @@ class LoginScreen extends Component<{}, LoginScreenState> {
         <Stack size={30} />
         <TextButton
           title="Don't have an account?"
-          align={'center'}
-          color={'rgb(181, 182, 221)'}
+          containerStyle={styles.containerStyleAccount}
+          labelStyle={styles.labelStyleAccount}
         />
       </BackgroundForm>
     );

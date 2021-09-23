@@ -85,7 +85,7 @@ class ProfileScreen extends Component<{}, ProfileScreenState> {
         containerStyle={styleProps.containerStyle}
         labelStyle={styleProps.labelStyle}
         onPress={this.toggleEditMode}
-        styleHeight={styles.forBackground}>
+        styleHeight={styles.backgroundStyle}>
         <Avatar
           avatar={this.state.image}
           onPress={this.chooseAvatar}
@@ -125,7 +125,7 @@ class ProfileScreen extends Component<{}, ProfileScreenState> {
             <FilledButton title={'Update profile'} onPress={this.updateInfo} />
           ) : (
             <FilledButton
-              styleButton={styles.forFilledButton}
+              styleButton={styles.filledButtonStyle}
               title={'Show state'}
               onPress={() => console.log(this.state)}
             />

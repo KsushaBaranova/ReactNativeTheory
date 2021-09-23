@@ -19,12 +19,12 @@ class Avatar extends Component<AvatarProps> {
           imageStyle={styles.imageStyle}
           style={styles.imageBackgroundStyle}
           source={this.props.avatar}>
-          {this.props.isEditMode ? (
+          {this.props.isEditMode && (
             <Image
               style={styles.iconStyle}
               source={require('../../images/photo.png')}
             />
-          ) : null}
+          )}
         </ImageBackground>
       </TouchableOpacity>
     );

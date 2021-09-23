@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
     alignItems: 'flex-end',
     paddingHorizontal: 30,
     marginTop: 70,
-    marginBottom: 50,
+    marginBottom: 20,
   },
   viewText: {
     color: 'white',
@@ -19,6 +19,10 @@ export const styles = StyleSheet.create({
   },
   containerViewText: {
     flex: 0.5,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  viewSearchBarStyle: {
     flexDirection: 'row',
     justifyContent: 'center',
   },

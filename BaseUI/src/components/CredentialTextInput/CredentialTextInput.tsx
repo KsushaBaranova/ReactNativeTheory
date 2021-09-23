@@ -4,7 +4,7 @@ import styles from './styles';
 
 export interface CredentialTextInputProps {
   placeholder: string;
-  secureTextEntry: boolean;
+  secureTextEntry?: boolean;
   value?: string;
   isEditable?: boolean;
   onChangeText?: (text: string) => void;
