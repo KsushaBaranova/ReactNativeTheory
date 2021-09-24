@@ -3,16 +3,15 @@ import {
   ListRenderItemInfo,
   SectionList,
   SectionListData,
-  StyleSheet,
   Text,
   View,
 } from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import BackgroundForm from '../../components/BackgroundForm/BackgroundForm';
-import SearchBar from '../../components/SearchBar';
+import SearchBar from '../../components/SearchBar/SearchBar';
 import SubscriberCell from '../../components/SubscriberCell/SubscriberCell';
-import styles from '../ProfileScreen/styles';
-import {SubscriberItem} from '../SubscribersScreen/SubscribersScreen';
+import {SubscriberItem} from '../../screens/SubscribersScreen/SubscribersScreen';
+import styles from './styles';
 
 export interface AddPeopleItem extends Omit<SubscriberItem, 'isFollowing'> {
   isAddUser: boolean | undefined;
@@ -71,13 +70,14 @@ function AddPeopleScreen() {
           },
           title: 'Bonny',
           description: 'Description...',
-          isAddUser: true,
+          isAddUser: false,
         },
       ],
     },
   ]);
 
-  const [filteredPeople, setFilteredPeople] = useState<AddPeopleState[]>([]);
+  const [filteredPeople, setFilteredPeople] =
+    useState<AddPeopleState[]>(people);
   const [inputValue, setInputValue] = useState('');
 
   const renderItem = (itemProps: ListRenderItemInfo<AddPeopleItem>) => {
@@ -109,7 +109,21 @@ function AddPeopleScreen() {
     return <Text>{title}</Text>;
   };
 
-  const onChangeValue = (value: string) => {};
+  const onChangeValue = (text: string) => {
+    let inputText = text.toLowerCase();
+    setInputValue(text);
+
+    const newListPeople = people.map(item => {
+      let filteredData = item.data.filter(person =>
+        person.title.toLowerCase().includes(inputText),
+      );
+
+      return filteredData.length !== 0
+        ? (item = {title: item.title, data: filteredData})
+        : (item = {title: '', data: []});
+    });
+    setFilteredPeople(newListPeople);
+  };
 
   return (
     <BackgroundForm
@@ -119,20 +133,12 @@ function AddPeopleScreen() {
         <SearchBar value={inputValue} onChangeText={onChangeValue} />
       }>
       <SectionList
-        style={styles1.flatListStyle}
-        sections={people}
+        style={styles.flatListStyle}
+        sections={filteredPeople}
         renderItem={renderItem}
         renderSectionHeader={renderHeader}
       />
     </BackgroundForm>
   );
 }
-
-const styles1 = StyleSheet.create({
-  flatListStyle: {
-    flex: 1,
-    width: '100%',
-  },
-});
-
 export default AddPeopleScreen;

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {View, Text, ViewStyle, TextStyle} from 'react-native';
 import TextButton from '../TextButton/TextButton';
 import styles from './styles';
-import SearchBar from '../SearchBar';
+import SearchBar from '../SearchBar/SearchBar';
 
 export interface HeaderProps {
   isEditMode?: boolean;
