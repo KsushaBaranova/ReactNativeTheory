@@ -1,3 +1,4 @@
+/* eslint-disable no-sequences */
 import React, {useState} from 'react';
 import {
   ListRenderItemInfo,
@@ -122,7 +123,11 @@ function AddPeopleScreen() {
         ? (item = {title: item.title, data: filteredData})
         : (item = {title: '', data: []});
     });
-    setFilteredPeople(newListPeople);
+    useFilterPeople(newListPeople);
+  };
+
+  const useFilterPeople = (obj: AddPeopleState[]) => {
+    setTimeout(() => setFilteredPeople(obj), 2000);
   };
 
   return (
