@@ -1,4 +1,5 @@
-import React, {Component} from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {useEffect, useState} from 'react';
 import BackgroundForm from '../../components/BackgroundForm/BackgroundForm';
 import CredentialTextInput from '../../components/CredentialTextInput/CredentialTextInput';
 import FilledButton from '../../components/FilledButton/FilledButton';
@@ -6,136 +7,130 @@ import {Stack} from 'react-native-spacing-system';
 import Avatar from '../../components/Avatar/Avatar';
 import ImagePicker from 'react-native-image-crop-picker';
 import FollowBlock from '../../components/FollowBlock/FollowBlock';
-import {EmitterSubscription, Keyboard, View} from 'react-native';
+import {EmitterSubscription, Keyboard, Text, View} from 'react-native';
 import styles from './styles';
 import styleProps from './styles';
+import useEmail from '../../hooks/useEmail';
 
-interface ProfileScreenState {
-  userName: string;
-  email: string;
-  image: object;
-  followers: number;
-  following: number;
-  isEditMode: boolean;
-  isKeyboardOpen: boolean;
-  errorMessage: string;
-}
+const ProfileScreen = () => {
+  const [userName, setUserName] = useState<string>('');
+  const [image, setImage] = useState(require('../../images/profile.png'));
+  const [followers, setFollowers] = useState<number>(250);
+  const [following, setFollowing] = useState<number>(1236);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [isKeyboardOpen, setIsKeyboardOpen] = useState<boolean>(false);
+  const [email, error, setEmail] = useEmail('');
 
-class ProfileScreen extends Component<{}, ProfileScreenState> {
-  state = {
-    userName: '',
-    email: '',
-    image: require('../../images/profile.png'),
-    followers: 250,
-    following: 1236,
-    isEditMode: false,
-    isKeyboardOpen: false,
-    errorMessage: '',
-  };
+  let showSubscription!: EmitterSubscription;
+  let hideSubscription!: EmitterSubscription;
 
-  showSubscription!: EmitterSubscription;
-  hideSubscription!: EmitterSubscription;
-
-  componentDidMount() {
-    this.showSubscription = Keyboard.addListener('keyboardDidShow', () => {
-      this.setState({isKeyboardOpen: true});
+  useEffect(() => {
+    showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      setIsKeyboardOpen(true);
     });
-    this.hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-      this.setState({isKeyboardOpen: false});
-    });
-  }
-
-  componentWillUnmount() {
-    this.showSubscription.remove();
-    this.hideSubscription.remove();
-  }
-
-  toggleEditMode = () => {
-    this.setState({isEditMode: !this.state.isEditMode});
-  };
-
-  updateInfo = () => {
-    this.setState({
-      userName: this.state.userName,
-      email: this.state.email,
-      image: this.state.image,
+    hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setIsKeyboardOpen(false);
     });
 
-    this.toggleEditMode();
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  });
+
+  const toggleEditMode = () => {
+    setIsEditMode(!isEditMode);
   };
 
-  chooseAvatar = () => {
+  const updateInfo = () => {
+    setUserName(userName);
+    setEmail(email);
+    setImage(image);
+
+    toggleEditMode();
+  };
+
+  const chooseAvatar = () => {
     ImagePicker.openPicker({
       width: 300,
       height: 400,
       cropping: true,
     }).then(img => {
-      let image: any = {...this.state.image};
-      image.uri = img.sourceURL;
-      this.setState({image});
+      let imageNew: any = {...image};
+      imageNew.uri = img.sourceURL;
+      setImage(imageNew);
     });
   };
 
-  render() {
-    return (
-      <BackgroundForm
-        title={'My profile'}
-        titleButton={'Edit'}
-        isEditMode={this.state.isEditMode}
-        containerStyle={styleProps.containerStyle}
-        labelStyle={styleProps.labelStyle}
-        onPress={this.toggleEditMode}
-        styleHeight={styles.backgroundStyle}>
-        <Avatar
-          avatar={this.state.image}
-          onPress={this.chooseAvatar}
-          isEditMode={this.state.isEditMode}
-        />
-        <Stack size={30} />
+  return (
+    <BackgroundForm
+      title={'My profile'}
+      titleButton={'Edit'}
+      isEditMode={isEditMode}
+      containerStyle={styleProps.containerStyle}
+      labelStyle={styleProps.labelStyle}
+      onPress={toggleEditMode}
+      styleHeight={styles.backgroundStyle}>
+      <Avatar avatar={image} onPress={chooseAvatar} isEditMode={isEditMode} />
+      <Stack size={30} />
 
-        {this.state.isEditMode ? null : (
-          <View>
-            <FollowBlock
-              followers={this.state.followers}
-              following={this.state.following}
-            />
-            <Stack size={30} />
-          </View>
-        )}
-
-        <CredentialTextInput
-          placeholder={'User name'}
-          secureTextEntry={false}
-          value={this.state.userName}
-          isEditable={this.state.isEditMode}
-          onChangeText={userName => this.setState({userName})}
-        />
-        <Stack size={15} />
-        <CredentialTextInput
-          placeholder={'Email'}
-          secureTextEntry={false}
-          value={this.state.email}
-          isEditable={this.state.isEditMode}
-          onChangeText={email => this.setState({email})}
-        />
-        <Stack size={40} />
-
-        <View style={styles.containerForFilledButton}>
-          {this.state.isEditMode ? (
-            <FilledButton title={'Update profile'} onPress={this.updateInfo} />
-          ) : (
-            <FilledButton
-              styleButton={styles.filledButtonStyle}
-              title={'Show state'}
-              onPress={() => console.log(this.state)}
-            />
-          )}
+      {isEditMode ? null : (
+        <View>
+          <FollowBlock followers={followers} following={following} />
+          <Stack size={30} />
         </View>
+      )}
 
-        <Stack size={15} />
-      </BackgroundForm>
-    );
-  }
-}
+      <CredentialTextInput
+        placeholder={'User name'}
+        secureTextEntry={false}
+        value={userName}
+        isEditable={isEditMode}
+        onChangeText={userName => setUserName(userName)}
+      />
+      <Stack size={15} />
+      <CredentialTextInput
+        placeholder={'Email'}
+        secureTextEntry={false}
+        value={email}
+        isEditable={isEditMode}
+        onChangeText={email => setEmail(email)}
+        isError={error !== undefined}
+      />
+      {isEditMode === true && error !== undefined && (
+        <Text style={styles.errorMessage}>{error}</Text>
+      )}
+
+      <Stack size={40} />
+
+      <View style={styles.containerForFilledButton}>
+        {isEditMode ? (
+          <FilledButton
+            title={'Update profile'}
+            onPress={updateInfo}
+            isError={error !== undefined}
+          />
+        ) : (
+          <FilledButton
+            styleButton={styles.filledButtonStyle}
+            title={'Show state'}
+            onPress={() =>
+              console.log(
+                `User name: ${userName}, 
+                email: ${email}, 
+                image: ${image.uri}, 
+                followers: ${followers}, 
+                following: ${following}, 
+                error: ${error}`,
+              )
+            }
+          />
+        )}
+      </View>
+
+      <Stack size={15} />
+    </BackgroundForm>
+  );
+};
 
 export default ProfileScreen;

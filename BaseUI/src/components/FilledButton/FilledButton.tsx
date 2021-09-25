@@ -7,6 +7,7 @@ export interface FilledButtonProps {
   onPress?: () => void;
   styleButton?: object;
   styleText?: TextStyle;
+  isError?: boolean;
 }
 
 class FilledButton extends Component<FilledButtonProps> {
@@ -14,7 +15,8 @@ class FilledButton extends Component<FilledButtonProps> {
     return (
       <TouchableOpacity
         style={[styles.touchableOpacityStyleButton, this.props.styleButton]}
-        onPress={this.props.onPress}>
+        onPress={this.props.onPress}
+        disabled={this.props.isError}>
         <Text style={[styles.textStyleButton, this.props.styleText]}>
           {this.props.title}
         </Text>

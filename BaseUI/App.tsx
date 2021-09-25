@@ -16,7 +16,7 @@ import SubscribersScreen from './src/screens/SubscribersScreen/SubscribersScreen
 
 class App extends Component {
   render() {
-    return <AddPeopleScreen />;
+    return <ProfileScreen />;
   }
 }
 

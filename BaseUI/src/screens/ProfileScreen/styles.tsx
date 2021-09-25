@@ -23,6 +23,12 @@ const styleProps = StyleSheet.create({
     color: 'black',
     height: 40,
   },
+  errorMessage: {
+    paddingLeft: 5,
+    alignSelf: 'flex-start',
+    color: 'red',
+    fontSize: 15,
+  },
 });
 
 export default styleProps;

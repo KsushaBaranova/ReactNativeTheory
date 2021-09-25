@@ -1,4 +1,4 @@
-/* eslint-disable no-sequences */
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, {useState} from 'react';
 import {
   ListRenderItemInfo,
@@ -79,7 +79,7 @@ function AddPeopleScreen() {
 
   const [filteredPeople, setFilteredPeople] =
     useState<AddPeopleState[]>(people);
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState<string>('');
 
   const renderItem = (itemProps: ListRenderItemInfo<AddPeopleItem>) => {
     return (
