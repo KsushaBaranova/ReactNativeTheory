@@ -1,4 +1,4 @@
-/* eslint-disable no-sequences */
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, {useState} from 'react';
 import {
   ListRenderItemInfo,
@@ -11,75 +11,53 @@ import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import BackgroundForm from '../../components/BackgroundForm/BackgroundForm';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import SubscriberCell from '../../components/SubscriberCell/SubscriberCell';
-import {SubscriberItem} from '../../screens/SubscribersScreen/SubscribersScreen';
+import {arrayWithPeople} from '../../data';
+import {AddPeopleItem, Section} from '../../intrfaces';
 import styles from './styles';
 
-export interface AddPeopleItem extends Omit<SubscriberItem, 'isFollowing'> {
-  isAddUser: boolean | undefined;
-}
+const AddPeopleScreen = () => {
+  const divideIntoSection = (list: Array<AddPeopleItem>): Section[] => {
+    let listWithSection: Section[] = [];
+    list.forEach(obj => {
+      let firstLetter = obj.title[0].toUpperCase();
+      let isHave: boolean = false;
+      listWithSection.forEach(section => {
+        if (section.title === firstLetter) {
+          isHave = true;
+          section.data.push(obj);
+          sortByLetter(section.data);
+        }
+      });
+      if (!isHave) {
+        listWithSection.push({title: firstLetter, data: [obj]});
+      }
+    });
+    sortByLetter(listWithSection);
+    return listWithSection;
+  };
 
-export interface AddPeopleState {
-  id?: string;
-  title: string;
-  data: AddPeopleItem[];
-}
+  const sortByLetter = (array: Section[] | Array<AddPeopleItem>) => {
+    array.sort((a, b) => (a.title > b.title ? 1 : -1));
+  };
 
-function AddPeopleScreen() {
-  const [people, setPeople] = useState<AddPeopleState[]>([
-    {
-      id: '1',
-      title: 'A',
-      data: [
-        {
-          id: 'A1',
-          image: {
-            uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png',
-          },
-          title: 'Anna',
-          description: 'Description...',
-          isAddUser: false,
-        },
-        {
-          id: 'A2',
-          image: {
-            uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png',
-          },
-          title: 'Andrey',
-          description: 'Description...',
-          isAddUser: true,
-        },
-      ],
-    },
+  const [people, setPeople] = useState<Section[]>(() =>
+    divideIntoSection(arrayWithPeople),
+  );
+  const [filteredPeople, setFilteredPeople] = useState<Section[]>(people);
+  const [inputValue, setInputValue] = useState<string>('');
 
-    {
-      id: '2',
-      title: 'B',
-      data: [
-        {
-          id: 'B1',
-          image: {
-            uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png',
-          },
-          title: 'Ben',
-          description: 'Description...',
-          isAddUser: false,
-        },
-        {
-          id: 'B2',
-          image: {
-            uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png',
-          },
-          title: 'Bonny',
-          description: 'Description...',
-          isAddUser: false,
-        },
-      ],
-    },
-  ]);
-
-  const [filteredPeople, setFilteredPeople] =
-    useState<AddPeopleState[]>(people);
-  const [inputValue, setInputValue] = useState('');
+  const toggleCheckBox = (
+    isChecked: boolean | undefined,
+    section: ListRenderItemInfo<AddPeopleItem>,
+  ): void => {
+    let usersCopy = [...people];
+    usersCopy[section.index].data.find(item => {
+      if (item.id === section.item.id) {
+        item.isAddUser = isChecked;
+      }
+    });
+    setPeople(usersCopy);
+  };
 
   const renderItem = (itemProps: ListRenderItemInfo<AddPeopleItem>) => {
     return (
@@ -88,13 +66,7 @@ function AddPeopleScreen() {
           <BouncyCheckbox
             fillColor="rgb(64, 80, 164)"
             onPress={(isChecked: boolean | undefined) => {
-              let usersCopy = [...people];
-              usersCopy[itemProps.index].data.find(item => {
-                if (item.id === itemProps.item.id) {
-                  item.isAddUser = isChecked;
-                }
-              });
-              setPeople(usersCopy);
+              toggleCheckBox(isChecked, itemProps);
             }}
           />
         </SubscriberCell>
@@ -107,27 +79,27 @@ function AddPeopleScreen() {
   }: {
     section: SectionListData<AddPeopleItem>;
   }) => {
-    return <Text>{title}</Text>;
+    return <Text style={styles.headerStyle}>{title}</Text>;
   };
 
-  const onChangeValue = (text: string) => {
+  const onChangeValue = (text: string): void => {
     let inputText = text.toLowerCase();
     setInputValue(text);
 
-    const newListPeople = people.map(item => {
-      let filteredData = item.data.filter(person =>
+    const newListPeople: Section[] = [];
+    people.forEach(section => {
+      let filteredData = section.data.filter(person =>
         person.title.toLowerCase().includes(inputText),
       );
-
-      return filteredData.length !== 0
-        ? (item = {title: item.title, data: filteredData})
-        : (item = {title: '', data: []});
+      if (filteredData.length !== 0) {
+        newListPeople.push({title: section.title, data: filteredData});
+      }
     });
     useFilterPeople(newListPeople);
   };
 
-  const useFilterPeople = (obj: AddPeopleState[]) => {
-    setTimeout(() => setFilteredPeople(obj), 2000);
+  const useFilterPeople = (peopleList: Section[]) => {
+    setTimeout(() => setFilteredPeople(peopleList), 2000);
   };
 
   return (
@@ -142,8 +114,12 @@ function AddPeopleScreen() {
         sections={filteredPeople}
         renderItem={renderItem}
         renderSectionHeader={renderHeader}
+        ListEmptyComponent={
+          <Text style={styles.emptyListStyle}>Nothing found</Text>
+        }
       />
     </BackgroundForm>
   );
-}
+};
+
 export default AddPeopleScreen;

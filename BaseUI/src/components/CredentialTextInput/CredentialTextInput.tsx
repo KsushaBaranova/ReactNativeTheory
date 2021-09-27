@@ -1,14 +1,7 @@
 import React, {Component} from 'react';
 import {TextInput} from 'react-native';
+import {CredentialTextInputProps} from '../../intrfaces';
 import styles from './styles';
-
-export interface CredentialTextInputProps {
-  placeholder: string;
-  secureTextEntry?: boolean;
-  value?: string;
-  isEditable?: boolean;
-  onChangeText?: (text: string) => void;
-}
 
 class CredentialTextInput extends Component<CredentialTextInputProps> {
   render() {

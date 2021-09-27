@@ -1,12 +1,6 @@
 import React, {Component} from 'react';
-import {Text, TextStyle, TouchableOpacity, ViewStyle} from 'react-native';
-
-export interface TextButtonProps {
-  title?: string;
-  containerStyle?: ViewStyle;
-  labelStyle?: TextStyle;
-  onPress?: () => void;
-}
+import {Text, TouchableOpacity} from 'react-native';
+import {TextButtonProps} from '../../intrfaces';
 
 class TextButton extends Component<TextButtonProps> {
   render() {

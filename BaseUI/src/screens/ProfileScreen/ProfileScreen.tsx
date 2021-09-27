@@ -9,17 +9,7 @@ import FollowBlock from '../../components/FollowBlock/FollowBlock';
 import {EmitterSubscription, Keyboard, View} from 'react-native';
 import styles from './styles';
 import styleProps from './styles';
-
-interface ProfileScreenState {
-  userName: string;
-  email: string;
-  image: object;
-  followers: number;
-  following: number;
-  isEditMode: boolean;
-  isKeyboardOpen: boolean;
-  errorMessage: string;
-}
+import {ProfileScreenState} from '../../intrfaces';
 
 class ProfileScreen extends Component<{}, ProfileScreenState> {
   state = {

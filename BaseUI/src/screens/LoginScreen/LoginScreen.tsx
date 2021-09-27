@@ -7,11 +7,7 @@ import {Stack} from 'react-native-spacing-system';
 import BackgroundForm from '../../components/BackgroundForm/BackgroundForm';
 import styles from '../../components/BackgroundForm/styles';
 import {Text} from 'react-native';
-
-interface LoginScreenState {
-  email: string;
-  password: string;
-}
+import {LoginScreenState} from '../../intrfaces';
 
 class LoginScreen extends Component<{}, LoginScreenState> {
   state = {

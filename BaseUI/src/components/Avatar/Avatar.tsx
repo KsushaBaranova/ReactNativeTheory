@@ -1,12 +1,7 @@
 import React, {Component} from 'react';
 import {TouchableOpacity, Image, ImageBackground} from 'react-native';
+import {AvatarProps} from '../../intrfaces';
 import styles from './styles';
-
-interface AvatarProps {
-  avatar: object;
-  onPress?: () => void;
-  isEditMode: boolean;
-}
 
 class Avatar extends Component<AvatarProps> {
   render() {

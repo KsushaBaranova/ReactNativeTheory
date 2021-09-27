@@ -1,13 +1,7 @@
 import React, {Component} from 'react';
-import {Text, TextStyle, TouchableOpacity} from 'react-native';
+import {Text, TouchableOpacity} from 'react-native';
+import {FilledButtonProps} from '../../intrfaces';
 import styles from './styles';
-
-export interface FilledButtonProps {
-  title?: string;
-  onPress?: () => void;
-  styleButton?: object;
-  styleText?: TextStyle;
-}
 
 class FilledButton extends Component<FilledButtonProps> {
   render() {

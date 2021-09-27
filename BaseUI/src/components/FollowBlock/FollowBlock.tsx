@@ -1,11 +1,7 @@
 import React, {Component} from 'react';
 import {Text, View} from 'react-native';
+import {FollowBlockProps} from '../../intrfaces';
 import styles from './styles';
-
-export interface FollowBlockProps {
-  followers: number;
-  following: number;
-}
 
 class FollowBlock extends Component<FollowBlockProps> {
   render() {

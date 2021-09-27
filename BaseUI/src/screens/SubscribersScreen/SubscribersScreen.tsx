@@ -1,118 +1,21 @@
 import React, {useState} from 'react';
 import {FlatList, ListRenderItemInfo, View} from 'react-native';
-import {ImageSourcePropType} from 'react-native';
 import BackgroundForm from '../../components/BackgroundForm/BackgroundForm';
 import FilledButton from '../../components/FilledButton/FilledButton';
 import SubscriberCell from '../../components/SubscriberCell/SubscriberCell';
+import {arrayWithSubscribers} from '../../data';
+import {SubscriberItem} from '../../intrfaces';
 import styles from './styles';
 
-export interface SubscriberItem {
-  id?: string;
-  image: ImageSourcePropType;
-  title: string;
-  description: string;
-  isFollowing?: boolean;
-}
+const SubscribersScreen = () => {
+  const [subscribers, setSubscribers] =
+    useState<SubscriberItem[]>(arrayWithSubscribers);
 
-function SubscribersScreen() {
-  const [subscribers, setSubscribers] = useState<SubscriberItem[]>([
-    {
-      image: {
-        uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png',
-      },
-      title: 'First user',
-      description: 'Description...',
-      isFollowing: false,
-    },
-    {
-      image: {
-        uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png',
-      },
-      title: 'Second user',
-      description: 'Description...',
-      isFollowing: true,
-    },
-    {
-      image: {
-        uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png',
-      },
-      title: 'Third user',
-      description: 'Description...',
-      isFollowing: false,
-    },
-    {
-      image: {
-        uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png',
-      },
-      title: 'Fours user',
-      description: 'Description...',
-      isFollowing: true,
-    },
-    {
-      image: {
-        uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png',
-      },
-      title: 'First user',
-      description: 'Description...',
-      isFollowing: false,
-    },
-    {
-      image: {
-        uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png',
-      },
-      title: 'Second user',
-      description: 'Description...',
-      isFollowing: true,
-    },
-    {
-      image: {
-        uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png',
-      },
-      title: 'Third user',
-      description: 'Description...',
-      isFollowing: false,
-    },
-    {
-      image: {
-        uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png',
-      },
-      title: 'Fousad user',
-      description: 'Description...',
-      isFollowing: true,
-    },
-    {
-      image: {
-        uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png',
-      },
-      title: 'First user',
-      description: 'Description...',
-      isFollowing: false,
-    },
-    {
-      image: {
-        uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png',
-      },
-      title: 'Second user',
-      description: 'Description...',
-      isFollowing: true,
-    },
-    {
-      image: {
-        uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png',
-      },
-      title: 'Third user',
-      description: 'Description...',
-      isFollowing: false,
-    },
-    {
-      image: {
-        uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png',
-      },
-      title: 'Fours user',
-      description: 'Description...',
-      isFollowing: true,
-    },
-  ]);
+  const toglleFollowButton = (user: ListRenderItemInfo<SubscriberItem>) => {
+    let subscribersCopy = [...subscribers];
+    subscribersCopy[user.index].isFollowing = !user.item.isFollowing;
+    setSubscribers(subscribersCopy);
+  };
 
   const renderItem = (itemProps: ListRenderItemInfo<SubscriberItem>) => {
     return (
@@ -132,10 +35,7 @@ function SubscribersScreen() {
                 : styles.followButtonTextStyle
             }
             onPress={() => {
-              let subscribersCopy = [...subscribers];
-              subscribersCopy[itemProps.index].isFollowing =
-                !itemProps.item.isFollowing;
-              setSubscribers(subscribersCopy);
+              toglleFollowButton(itemProps);
             }}
           />
         </SubscriberCell>
@@ -152,6 +52,6 @@ function SubscribersScreen() {
       />
     </BackgroundForm>
   );
-}
+};
 
 export default SubscribersScreen;

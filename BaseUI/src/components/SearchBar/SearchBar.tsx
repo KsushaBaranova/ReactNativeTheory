@@ -1,11 +1,7 @@
 import React from 'react';
 import {TextInput} from 'react-native';
+import {SearchBarProps} from '../../intrfaces';
 import styles from './styles';
-
-export interface SearchBarProps {
-  value: string;
-  onChangeText: (text: string) => void;
-}
 
 const SearchBar: React.FC<SearchBarProps> = ({value, onChangeText}) => {
   return (

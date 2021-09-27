@@ -1,11 +1,7 @@
 import React, {Component} from 'react';
-import {ImageSourcePropType} from 'react-native';
 import {Image, TouchableOpacity} from 'react-native';
+import {SocialNetworkButtonProps} from '../../intrfaces';
 import styles from './styles';
-
-export interface SocialNetworkButtonProps {
-  image: ImageSourcePropType;
-}
 
 class SocialNetworkButton extends Component<SocialNetworkButtonProps> {
   render() {

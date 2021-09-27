@@ -1,18 +1,8 @@
 import React, {Component} from 'react';
-import {View, Text, ViewStyle, TextStyle} from 'react-native';
+import {View, Text} from 'react-native';
 import TextButton from '../TextButton/TextButton';
 import styles from './styles';
-import SearchBar from '../SearchBar/SearchBar';
-
-export interface HeaderProps {
-  isEditMode?: boolean;
-  titleButton?: string;
-  title?: string;
-  containerStyle?: ViewStyle;
-  labelStyle?: TextStyle;
-  onPress?: () => void;
-  prepearComponent?: JSX.Element;
-}
+import {HeaderProps} from '../../intrfaces';
 
 class Header extends Component<HeaderProps> {
   render() {

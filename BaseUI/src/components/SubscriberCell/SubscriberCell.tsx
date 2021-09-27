@@ -1,12 +1,8 @@
 import React from 'react';
 import {Text} from 'react-native';
 import {Image, View} from 'react-native';
-import {SubscriberItem} from '../../screens/SubscribersScreen/SubscribersScreen';
+import {SubscriberCellPros} from '../../intrfaces';
 import styles from './styles';
-
-export interface SubscriberCellPros {
-  subscriber: SubscriberItem;
-}
 
 const SubscriberCell: React.FC<SubscriberCellPros> = ({
   subscriber,
