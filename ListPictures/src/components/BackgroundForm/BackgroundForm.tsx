@@ -1,13 +1,8 @@
 import React, {Component} from 'react';
 import {View, Text} from 'react-native';
 import {Stack} from 'react-native-spacing-system';
+import {BackgroundFormProps} from '../interfaces/interfaces';
 import styles from './styles';
-
-export interface BackgroundFormProps {
-  additionViewStyle: object;
-  backgroundColor: string;
-  headerProps: {title: string};
-}
 
 class BackgroundForm extends Component<BackgroundFormProps> {
   render() {

@@ -3,26 +3,9 @@ import {FlatList, ListRenderItemInfo, Text, View} from 'react-native';
 import {Stack} from 'react-native-spacing-system';
 import BackgroundForm from '../components/BackgroundForm/BackgroundForm';
 import ImageCell from '../components/ImageCell/ImageCell';
-import {
-  ImageApi,
-  ImageApiInterface,
-  PhotoDataResponse,
-} from '../services/ImageApi';
+import {PhotoModel} from '../components/interfaces/interfaces';
+import {ImageApi, PhotoDataResponse} from '../services/ImageApi';
 import styles from './styles';
-
-type PhotoModel = {
-  id: string;
-  imageUrl?: string;
-  profileImageUrl?: string;
-  name?: string;
-  likesCount?: number;
-  isLiked: boolean;
-};
-
-export interface ImageScreenState {
-  images: Array<PhotoModel>;
-  imageApi: ImageApiInterface<PhotoDataResponse>;
-}
 
 const ImagesScreen = () => {
   const [images, setImages] = useState([] as PhotoModel[]);
@@ -66,7 +49,6 @@ const ImagesScreen = () => {
             return user;
           }
         });
-
         setImages(updatedImages);
       })
       .catch(error => console.log(error));
@@ -90,7 +72,6 @@ const ImagesScreen = () => {
             return user;
           }
         });
-
         setImages(updatedImages);
       })
       .catch(error => console.log(error));
@@ -107,9 +88,7 @@ const ImagesScreen = () => {
             authorName: item.name,
           }}
           likes={item.likesCount}
-          likeFoto={() => {
-            item.isLiked ? unlike(item.id) : like(item.id);
-          }}
+          likeFoto={item.isLiked ? () => unlike(item.id) : () => like(item.id)}
         />
       </View>
     );

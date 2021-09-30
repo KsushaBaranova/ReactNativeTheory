@@ -1,18 +1,9 @@
 import React from 'react';
-import {Dimensions, Image, View} from 'react-native';
+import {Dimensions, Image, StyleSheet, View} from 'react-native';
 import {Inset, Stack} from 'react-native-spacing-system';
-import ImageCellHeader, {
-  ImageCellHeaderProps,
-} from '../ImageCellHeader/ImageCellHeader';
+import ImageCellHeader from '../ImageCellHeader/ImageCellHeader';
+import {ImageCellProps} from '../interfaces/interfaces';
 import LikesCell from '../LikesCell/LikesCell';
-import styles from './styles';
-
-export type ImageCellProps = {
-  imageUrl?: string;
-  headerProps: ImageCellHeaderProps;
-  likes?: number | undefined;
-  likeFoto?: () => void;
-};
 
 const screenWidth = Dimensions.get('window').width;
 const imageHeight = 300;
@@ -36,5 +27,16 @@ const ImageCell: React.FC<ImageCellProps> = (props: ImageCellProps) => {
   );
 };
 
+const styles = StyleSheet.create({
+  footerContainerStyle: {
+    height: 26,
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  imageStyle: {
+    height: imageHeight,
+    width: screenWidth,
+  },
+});
+
 export default ImageCell;
-export {screenWidth, imageHeight};
