@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {View, Text} from 'react-native';
 import {Stack} from 'react-native-spacing-system';
-import {BackgroundFormProps} from '../interfaces/interfaces';
+import {BackgroundFormProps} from '../../interfaces/interfaces';
 import styles from './styles';
 
 class BackgroundForm extends Component<BackgroundFormProps> {

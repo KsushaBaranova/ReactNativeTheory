@@ -1,7 +1,7 @@
 import React from 'react';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 import {Queue} from 'react-native-spacing-system';
-import {LikesCellProps} from '../interfaces/interfaces';
+import {LikesCellProps} from '../../interfaces/interfaces';
 import styles from './styles';
 
 const LikesCell: React.FC<LikesCellProps> = (props: LikesCellProps) => {

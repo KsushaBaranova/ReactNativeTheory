@@ -1,4 +1,4 @@
-import {ImageApiInterface} from '../components/interfaces/interfaces';
+import {ImageApiInterface} from '../interfaces/interfaces';
 
 const baseUrl = 'https://api.unsplash.com';
 const photos = '/photos';

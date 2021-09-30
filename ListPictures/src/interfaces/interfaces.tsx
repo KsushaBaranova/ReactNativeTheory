@@ -1,4 +1,4 @@
-import {PhotoDataResponse} from '../../services/ImageApi';
+import {PhotoDataResponse} from '../services/ImageApi';
 
 export type PhotoModel = {
   id: string;

@@ -3,7 +3,7 @@ import {FlatList, ListRenderItemInfo, Text, View} from 'react-native';
 import {Stack} from 'react-native-spacing-system';
 import BackgroundForm from '../components/BackgroundForm/BackgroundForm';
 import ImageCell from '../components/ImageCell/ImageCell';
-import {PhotoModel} from '../components/interfaces/interfaces';
+import {PhotoModel} from '../interfaces/interfaces';
 import {ImageApi, PhotoDataResponse} from '../services/ImageApi';
 import styles from './styles';
 

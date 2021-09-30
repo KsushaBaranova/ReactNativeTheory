@@ -2,7 +2,7 @@ import React from 'react';
 import {Dimensions, Image, StyleSheet, View} from 'react-native';
 import {Inset, Stack} from 'react-native-spacing-system';
 import ImageCellHeader from '../ImageCellHeader/ImageCellHeader';
-import {ImageCellProps} from '../interfaces/interfaces';
+import {ImageCellProps} from '../../interfaces/interfaces';
 import LikesCell from '../LikesCell/LikesCell';
 
 const screenWidth = Dimensions.get('window').width;
