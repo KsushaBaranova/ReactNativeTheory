@@ -1,34 +1,25 @@
-import {PhotoDataResponse} from '../services/ImageApi';
+import {PhotoDataResponse} from './types';
 
-export type PhotoModel = {
+export interface PhotoModel {
   id: string;
   imageUrl?: string;
+  isLiked: boolean;
   profileImageUrl?: string;
   name?: string;
-  likesCount?: number;
-  isLiked: boolean;
-};
+  likesCount: number;
+}
 
-export type ImageCellProps = {
-  imageUrl?: string;
-  headerProps: ImageCellHeaderProps;
-  likes?: number | undefined;
-  likeFoto?: () => void;
-};
-
-export type ImageCellHeaderProps = {
-  profileUrl?: string;
-  authorName?: string;
-};
-
-export type LikesCellProps = {
-  isLiked?: boolean;
-  likes: number | undefined;
-  likeFoto?: () => void;
-};
+export interface PhotosState {
+  items: Array<PhotoModel>;
+  loading: boolean;
+  error: string | null;
+}
 
 export interface ImageApiInterface<T> {
-  fetchPhotos(): Promise<Array<T>>;
+  fetchPhotos(orderBy: object): Promise<Array<T>>;
+  likePhoto(userId: Array<string>): Promise<T>;
+  unlikePhoto(userId: Array<string>): Promise<T>;
+  searchPhotos(query: object): Promise<T>;
 }
 
 export interface ImageScreenState {
@@ -40,4 +31,12 @@ export interface BackgroundFormProps {
   additionViewStyle: object;
   backgroundColor: string;
   headerProps: {title: string};
+  prepearComponent?: JSX.Element;
+}
+
+export interface SearchBarProps {
+  value: string;
+  onChangeText?: (text: string) => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
 }

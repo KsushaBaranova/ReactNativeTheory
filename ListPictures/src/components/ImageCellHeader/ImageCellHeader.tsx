@@ -1,7 +1,7 @@
 import React from 'react';
 import {Image, Text, View} from 'react-native';
 import {Queue} from 'react-native-spacing-system';
-import {ImageCellHeaderProps} from '../../interfaces/interfaces';
+import {ImageCellHeaderProps} from '../../interfaces/types';
 import styles from './styles';
 
 const ImageCellHeader: React.FC<ImageCellHeaderProps> = (

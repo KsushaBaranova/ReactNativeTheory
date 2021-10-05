@@ -12,11 +12,13 @@ class BackgroundForm extends Component<BackgroundFormProps> {
           styles.backgroundStyle,
           {backgroundColor: this.props.backgroundColor},
         ]}>
-        <Stack size={45} />
+        <Stack size={50} />
         <View style={styles.viewTextStyle}>
           <Text style={styles.textStyle}>{this.props.headerProps.title}</Text>
         </View>
         <Stack size={15} />
+        {this.props.prepearComponent}
+        <Stack size={5} />
         <View style={this.props.additionViewStyle}>{this.props.children}</View>
       </View>
     );
