@@ -1,8 +1,7 @@
-import {ImageApiInterface} from '../interfaces/interfaces';
+import {ImageApiInterface, PhotoDataResponse} from '../interfaces/interfaces';
 
 const baseUrl = 'https://api.unsplash.com';
 const photos = '/photos';
-const clientId = 'L7_7oGGDGRmzsjZDIwunMqkRPtpoIJE6-rcE_vrSFO0';
 const accessToken = 'BR5DLUKnMWnxGaaDg7HRp_xq3rbow6tHxFvyiuNp-TA';
 
 export class ImageApi<T> implements ImageApiInterface<T> {
@@ -14,13 +13,13 @@ export class ImageApi<T> implements ImageApiInterface<T> {
       method: method,
       headers: {
         Accept: 'application/json',
-        Authorization: `Client-ID ${clientId}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     });
   }
 
   private async auth(id: string, method: string): Promise<Response> {
-    return fetch(`${baseUrl}/photos/:${id}/like`, {
+    return fetch(`${baseUrl}/photos/${id}/like`, {
       method: method,
       headers: {
         Accept: 'application/json',
@@ -38,26 +37,24 @@ export class ImageApi<T> implements ImageApiInterface<T> {
   }
 
   async likePhoto(id: string): Promise<T> {
-    return this.auth(id, 'POST')
+    console.log(id);
+    return this.init(`${photos}/${id}/like`, 'POST')
       .then(response => response.json())
       .then(data => {
+        console.log(data);
         return data as T;
       });
   }
 
   async unlikePhoto(id: string): Promise<T> {
-    return this.auth(id, 'DELETE')
+    console.log(id);
+    return this.init(`${photos}/${id}/like`, 'DELETE')
       .then(response => response.json())
       .then(data => {
+        //console.log(data);
         return data as T;
       });
   }
 }
 
-export type PhotoDataResponse = {
-  id: string;
-  liked_by_user: boolean;
-  likes: number;
-  user?: {name: string; profile_image?: {small?: string}};
-  urls?: {small: string};
-};
+export const imageApi = new ImageApi<PhotoDataResponse>();

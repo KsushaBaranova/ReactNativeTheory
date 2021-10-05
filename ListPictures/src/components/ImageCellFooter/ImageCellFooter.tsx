@@ -1,10 +1,12 @@
 import React from 'react';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 import {Queue} from 'react-native-spacing-system';
-import {LikesCellProps} from '../../interfaces/interfaces';
+import {ImageCellFooterProps} from '../../interfaces/interfaces';
 import styles from './styles';
 
-const LikesCell: React.FC<LikesCellProps> = (props: LikesCellProps) => {
+const ImageCellFooter: React.FC<ImageCellFooterProps> = (
+  props: ImageCellFooterProps,
+) => {
   return (
     <View style={styles.viewContainerStyle}>
       <TouchableOpacity onPress={props.likeFoto}>
@@ -21,4 +23,4 @@ const LikesCell: React.FC<LikesCellProps> = (props: LikesCellProps) => {
   );
 };
 
-export default LikesCell;
+export default ImageCellFooter;

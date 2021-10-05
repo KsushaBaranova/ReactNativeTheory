@@ -1,5 +1,3 @@
-import {PhotoDataResponse} from '../services/ImageApi';
-
 export type PhotoModel = {
   id: string;
   imageUrl?: string;
@@ -21,14 +19,31 @@ export type ImageCellHeaderProps = {
   authorName?: string;
 };
 
-export type LikesCellProps = {
+export type ImageCellFooterProps = {
   isLiked?: boolean;
   likes: number | undefined;
   likeFoto?: () => void;
 };
 
+export type PhotoDataResponse = {
+  photo: LikeDataResponse;
+  id: string;
+  liked_by_user: boolean;
+  likes: number;
+  user?: {name: string; profile_image?: {small?: string}};
+  urls?: {small: string};
+};
+
+export type LikeDataResponse = {
+  id: string;
+  liked_by_user: boolean;
+  likes: number;
+};
+
 export interface ImageApiInterface<T> {
   fetchPhotos(): Promise<Array<T>>;
+  likePhoto(id: string): Promise<T>;
+  unlikePhoto(id: string): Promise<T>;
 }
 
 export interface ImageScreenState {

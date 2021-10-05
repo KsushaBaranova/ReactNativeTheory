@@ -3,13 +3,12 @@ import {FlatList, ListRenderItemInfo, Text, View} from 'react-native';
 import {Stack} from 'react-native-spacing-system';
 import BackgroundForm from '../components/BackgroundForm/BackgroundForm';
 import ImageCell from '../components/ImageCell/ImageCell';
-import {PhotoModel} from '../interfaces/interfaces';
-import {ImageApi, PhotoDataResponse} from '../services/ImageApi';
+import {PhotoDataResponse, PhotoModel} from '../interfaces/interfaces';
+import {imageApi} from '../services/ImageApi';
 import styles from './styles';
 
 const ImagesScreen = () => {
   const [images, setImages] = useState([] as PhotoModel[]);
-  const [imageApi, setImageApi] = useState(new ImageApi<PhotoDataResponse>());
 
   useEffect(() => {
     imageApi
@@ -29,52 +28,38 @@ const ImagesScreen = () => {
       .catch(error => {
         console.log('fetch error: ', error);
       });
-  });
+  }, []);
 
   const like = (id: string) => {
     imageApi
       .likePhoto(id)
-      .then((value: PhotoDataResponse) => {
-        const updatedImages = images.map(user => {
-          if (user.id === id) {
-            return (user = {
-              id: user.id,
-              imageUrl: user.imageUrl,
-              name: user.name,
-              profileImageUrl: user.profileImageUrl,
-              isLiked: value.liked_by_user,
-              likesCount: value.likes,
-            });
-          } else {
-            return user;
-          }
-        });
-        setImages(updatedImages);
-      })
-      .catch(error => console.log(error));
+      .then((value: PhotoDataResponse) => updateLikeInfo(value, id))
+      .catch(error => console.log('like error', error));
   };
 
   const unlike = (id: string) => {
     imageApi
       .unlikePhoto(id)
-      .then((value: PhotoDataResponse) => {
-        const updatedImages = images.map(user => {
-          if (user.id === id) {
-            return (user = {
-              id: user.id,
-              imageUrl: user.imageUrl,
-              name: user.name,
-              profileImageUrl: user.profileImageUrl,
-              isLiked: value.liked_by_user,
-              likesCount: value.likes,
-            });
-          } else {
-            return user;
-          }
+      .then((value: PhotoDataResponse) => updateLikeInfo(value, id))
+      .catch(error => console.log('unlike error', error));
+  };
+
+  const updateLikeInfo = (value: PhotoDataResponse, id: string) => {
+    console.log(value);
+    console.log(value.liked_by_user);
+    const updatedImages = images.map(user => {
+      if (user.id === id) {
+        console.log(user);
+        return (user = {
+          ...user,
+          isLiked: value.photo.liked_by_user,
+          likesCount: value.photo.likes,
         });
-        setImages(updatedImages);
-      })
-      .catch(error => console.log(error));
+      } else {
+        return user;
+      }
+    });
+    setImages(updatedImages);
   };
 
   const renderItem = (itemInfo: ListRenderItemInfo<PhotoModel>) => {
