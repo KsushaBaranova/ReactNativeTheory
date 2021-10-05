@@ -18,7 +18,7 @@ class BackgroundForm extends Component<BackgroundFormProps> {
         </View>
         <Stack size={15} />
         {this.props.prepearComponent}
-        <Stack size={5} />
+        <Stack size={15} />
         <View style={this.props.additionViewStyle}>{this.props.children}</View>
       </View>
     );

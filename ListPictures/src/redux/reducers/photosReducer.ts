@@ -11,9 +11,6 @@ export const photosSlice = createSlice({
   name: 'photos',
   initialState,
   reducers: {
-    /*     setPhotos: (state, action: PayloadAction<Array<PhotoModel>>) => {
-      state.items = action.payload;
-    }, */
     emptyList: state => {
       state.items = [];
     },
@@ -23,18 +20,18 @@ export const photosSlice = createSlice({
       state.items = action.payload;
     });
     builder.addCase(likePhoto.fulfilled, (state, action) => {
-      let getPost = state.items.find(item => item.id === action.payload.id);
-      getPost
-        ? ((getPost.isLiked = action.payload.isLiked),
-          (getPost.likesCount = action.payload.likesCount))
-        : null;
+      let getData = state.items.find(item => item.id === action.payload.id);
+      getData
+        ? ((getData.isLiked = action.payload.isLiked),
+          (getData.likesCount = action.payload.likesCount))
+        : state;
     });
     builder.addCase(unlikePhoto.fulfilled, (state, action) => {
-      let getPost = state.items.find(item => item.id === action.payload.id);
-      getPost
-        ? ((getPost.isLiked = action.payload.isLiked),
-          (getPost.likesCount = action.payload.likesCount))
-        : null;
+      let getData = state.items.find(item => item.id === action.payload.id);
+      getData
+        ? ((getData.isLiked = action.payload.isLiked),
+          (getData.likesCount = action.payload.likesCount))
+        : state;
     });
     builder.addCase(searchPhotos.fulfilled, (state, action) => {
       state.items = action.payload;

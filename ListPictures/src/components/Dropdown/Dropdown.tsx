@@ -1,22 +1,34 @@
-import React from 'react';
-import {TextInput} from 'react-native';
+import React, {useState} from 'react';
+import {View} from 'react-native';
+import DropDownPicker from 'react-native-dropdown-picker';
+import {DropdownProps} from '../../interfaces/types';
+import styles from './style';
 
-const Dropdown: React.FC<SearchBarProps> = ({
+const Dropdown: React.FC<DropdownProps> = ({
   value,
-  onChangeText,
-  onFocus,
-  onBlur,
+  setValue,
+  onChangeValue,
 }) => {
+  const [open, setOpen] = useState(false);
+  const [items, setItems] = useState([
+    {label: 'latest', value: 'latest'},
+    {label: 'oldest', value: 'oldest'},
+    {label: 'popular', value: 'popular'},
+  ]);
+
   return (
-    <TextInput
-      style={styles.textInputStyle}
-      placeholder={'Search photos'}
-      placeholderTextColor="#a9a9a9"
-      value={value}
-      onChangeText={onChangeText}
-      onFocus={onFocus}
-      onBlur={onBlur}
-    />
+    <View style={styles.viewDropdownStyle}>
+      <DropDownPicker
+        value={value}
+        items={items}
+        open={open}
+        setOpen={setOpen}
+        setValue={setValue}
+        setItems={setItems}
+        style={styles.containerStyle}
+        onChangeValue={onChangeValue}
+      />
+    </View>
   );
 };
 

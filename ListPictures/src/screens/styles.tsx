@@ -56,6 +56,12 @@ const styles = StyleSheet.create({
     color: 'darkslategrey',
     fontWeight: 'bold',
   },
+  viewPrepearComponent: {
+    width: '100%',
+    alignItems: 'center',
+    flexWrap: 'nowrap',
+    zIndex: 1000,
+  },
 });
 
 export default styles;

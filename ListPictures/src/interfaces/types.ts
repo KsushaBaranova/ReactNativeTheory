@@ -16,6 +16,12 @@ export type LikesCellProps = {
   likeFoto?: () => void;
 };
 
+export type DropdownProps = {
+  value: string;
+  setValue: (value: string) => void;
+  onChangeValue: (value: any) => void;
+};
+
 export type PhotoDataResponse = {
   photo: LikeDataResponse;
   id: string;

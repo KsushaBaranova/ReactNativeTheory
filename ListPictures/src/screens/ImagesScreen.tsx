@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {FlatList, ListRenderItemInfo, Text, View} from 'react-native';
-import {Queue, Stack} from 'react-native-spacing-system';
+import {Stack} from 'react-native-spacing-system';
 import BackgroundForm from '../components/BackgroundForm/BackgroundForm';
 import ImageCell from '../components/ImageCell/ImageCell';
 import SearchBar from '../components/SearchBar/SearchBar';
@@ -13,7 +13,7 @@ import {searchPhotos} from '../redux/actions/async/searchPhotos';
 import {unlikePhoto} from '../redux/actions/async/unlikePhoto';
 import {emptyList} from '../redux/reducers/photosReducer';
 import styles from './styles';
-import DropDownPicker, {ValueType} from 'react-native-dropdown-picker';
+import Dropdown from '../components/Dropdown/Dropdown';
 
 const ImagesScreen: React.FC<{}> = () => {
   const dispatch = useAppDispatch();
@@ -22,14 +22,15 @@ const ImagesScreen: React.FC<{}> = () => {
   const [isFocusOnSearch, setIsFocusOnSearch] = useState<boolean>(false);
   let refreshing: boolean = false;
   let valueInputWithDelay = useDelay(inputValue, 2000);
-  /* 
+  const [valueOrderBy, setValueOrderBy] = useState('latest');
+
   useEffect(() => {
-    dispatch(fetchPhotos('popular'));
-  }, [dispatch]);
+    dispatch(fetchPhotos(valueOrderBy));
+  }, [dispatch, valueOrderBy]);
 
   useEffect(() => {
     dispatch(searchPhotos(valueInputWithDelay));
-  }, [dispatch, valueInputWithDelay]); */
+  }, [dispatch, valueInputWithDelay]);
 
   const renderItem = (itemInfo: ListRenderItemInfo<PhotoModel>) => {
     const {item} = itemInfo;
@@ -60,42 +61,27 @@ const ImagesScreen: React.FC<{}> = () => {
 
   const ItemSeparatorComponent = () => <Stack size={20} />;
 
-  const onChangeValueSearch = (text: string): void => {
-    setInputValue(text);
-  };
-
   const onFocus = (): void => {
     setIsFocusOnSearch(true);
-
-    console.log('Focus on search bar');
     if (isFocusOnSearch === false && inputValue === '') {
-      console.log('empty list');
       dispatch(emptyList());
     }
   };
 
   const onBlur = (): void => {
     setIsFocusOnSearch(false);
-
     if (isFocusOnSearch === true && inputValue === '') {
-      console.log('Blur on search bar IN IF');
-      dispatch(fetchPhotos('popular'));
+      dispatch(fetchPhotos(valueOrderBy));
     }
-
-    console.log('Blur on search bar');
   };
 
-/*   const onChangeValueDwopdown = (value: string): void => {
+  const onChangeValueSearch = (value: string): void => {
+    setInputValue(value);
+  };
+
+  const onChangeValueDwopdown = (value: any): void => {
     dispatch(fetchPhotos(value));
   };
-
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState('latest');
-  const [items, setItems] = useState([
-    {label: 'latest', value: 'latest'},
-    {label: 'oldest', value: 'oldest'},
-    {label: 'popular', value: 'popular'},
-  ]); */
 
   return (
     <BackgroundForm
@@ -105,43 +91,21 @@ const ImagesScreen: React.FC<{}> = () => {
         title: 'Images',
       }}
       prepearComponent={
-        <SearchBar
-          value={inputValue}
-          onChangeText={onChangeValueSearch}
-          onFocus={onFocus}
-          onBlur={onBlur}
-        />
-      }>
-      <View style={styles.viewDropdownStyle}>
-        {/*         <ModalDropdown
-          defaultValue={'Sort by'}
-          style={styles.buttonDwopdownStyle}
-          textStyle={styles.textDropdownStyle}
-          dropdownStyle={styles.listDropdownStyle}
-          dropdownTextStyle={styles.listTextDropdownStyle}
-          options={listSortBy}
-        /> */}
-
-{/*         <View
-          // eslint-disable-next-line react-native/no-inline-styles
-          style={{
-            zIndex: 1000,
-            width: '25%',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <DropDownPicker
-            value={value}
-            items={items}
-            open={open}
-            setOpen={setOpen}
-            setValue={setValue}
-            setItems={setItems}
-            onChangeValue={value => console.log(value)}
+        <View style={styles.viewPrepearComponent}>
+          <Dropdown
+            value={valueOrderBy}
+            setValue={setValueOrderBy}
+            onChangeValue={onChangeValueDwopdown}
           />
-          <Queue size={110} />
-        </View> */}
-      </View>
+          <Stack size={5} />
+          <SearchBar
+            value={inputValue}
+            onChangeText={onChangeValueSearch}
+            onFocus={onFocus}
+            onBlur={onBlur}
+          />
+        </View>
+      }>
       <FlatList<PhotoModel>
         keyExtractor={(_, index) => String(index)}
         style={styles.flatListStyle}

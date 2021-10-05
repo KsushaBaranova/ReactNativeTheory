@@ -7,7 +7,6 @@ const styles = StyleSheet.create({
     width: '90%',
     paddingLeft: 25,
     borderRadius: 20,
-    marginBottom: 20,
   },
 });
 
