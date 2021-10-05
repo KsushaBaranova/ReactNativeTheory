@@ -29,6 +29,39 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     alignSelf: 'center',
   },
+  viewDropdownStyle: {
+    flexDirection: 'column',
+    alignSelf: 'flex-end',
+  },
+  buttonDwopdownStyle: {
+    backgroundColor: 'darkslategrey',
+    borderRadius: 20,
+    height: 30,
+    width: 80,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  textDropdownStyle: {
+    fontSize: 14,
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  listDropdownStyle: {
+    height: 120,
+    borderColor: 'darkslategrey',
+    borderWidth: 2,
+  },
+  listTextDropdownStyle: {
+    fontSize: 14,
+    color: 'darkslategrey',
+    fontWeight: 'bold',
+  },
+  viewPrepearComponent: {
+    width: '100%',
+    alignItems: 'center',
+    flexWrap: 'nowrap',
+    zIndex: 1000,
+  },
 });
 
 export default styles;

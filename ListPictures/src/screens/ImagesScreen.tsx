@@ -3,98 +3,34 @@ import {FlatList, ListRenderItemInfo, Text, View} from 'react-native';
 import {Stack} from 'react-native-spacing-system';
 import BackgroundForm from '../components/BackgroundForm/BackgroundForm';
 import ImageCell from '../components/ImageCell/ImageCell';
-import {
-  ImageApi,
-  ImageApiInterface,
-  PhotoDataResponse,
-} from '../services/ImageApi';
+import SearchBar from '../components/SearchBar/SearchBar';
+import {useAppDispatch, useAppSelector} from '../hooks/hooks';
+import useDelay from '../hooks/useDelay';
+import {PhotoModel} from '../interfaces/interfaces';
+import {fetchPhotos} from '../redux/actions/async/fetchPhotos';
+import {likePhoto} from '../redux/actions/async/likePhoto';
+import {searchPhotos} from '../redux/actions/async/searchPhotos';
+import {unlikePhoto} from '../redux/actions/async/unlikePhoto';
+import {emptyList} from '../redux/reducers/photosReducer';
 import styles from './styles';
+import Dropdown from '../components/Dropdown/Dropdown';
 
-type PhotoModel = {
-  id: string;
-  imageUrl?: string;
-  profileImageUrl?: string;
-  name?: string;
-  likesCount?: number;
-  isLiked: boolean;
-};
-
-export interface ImageScreenState {
-  images: Array<PhotoModel>;
-  imageApi: ImageApiInterface<PhotoDataResponse>;
-}
-
-const ImagesScreen = () => {
-  const [images, setImages] = useState([] as PhotoModel[]);
-  const [imageApi, setImageApi] = useState(new ImageApi<PhotoDataResponse>());
+const ImagesScreen: React.FC<{}> = () => {
+  const dispatch = useAppDispatch();
+  const photos = useAppSelector(state => state.photos.items);
+  const [inputValue, setInputValue] = useState<string>('');
+  const [isFocusOnSearch, setIsFocusOnSearch] = useState<boolean>(false);
+  let refreshing: boolean = false;
+  let valueInputWithDelay = useDelay(inputValue, 2000);
+  const [valueOrderBy, setValueOrderBy] = useState('latest');
 
   useEffect(() => {
-    imageApi
-      .fetchPhotos()
-      .then(values => {
-        setImages(
-          values.map(value => ({
-            id: value.id,
-            imageUrl: value.urls?.small,
-            isLiked: value.liked_by_user,
-            profileImageUrl: value.user?.profile_image?.small,
-            name: value.user?.name,
-            likesCount: value.likes,
-          })),
-        );
-      })
-      .catch(error => {
-        console.log('fetch error: ', error);
-      });
-  });
+    dispatch(fetchPhotos(valueOrderBy));
+  }, [dispatch, valueOrderBy]);
 
-  const like = (id: string) => {
-    imageApi
-      .likePhoto(id)
-      .then((value: PhotoDataResponse) => {
-        const updatedImages = images.map(user => {
-          if (user.id === id) {
-            return (user = {
-              id: user.id,
-              imageUrl: user.imageUrl,
-              name: user.name,
-              profileImageUrl: user.profileImageUrl,
-              isLiked: value.liked_by_user,
-              likesCount: value.likes,
-            });
-          } else {
-            return user;
-          }
-        });
-
-        setImages(updatedImages);
-      })
-      .catch(error => console.log(error));
-  };
-
-  const unlike = (id: string) => {
-    imageApi
-      .unlikePhoto(id)
-      .then((value: PhotoDataResponse) => {
-        const updatedImages = images.map(user => {
-          if (user.id === id) {
-            return (user = {
-              id: user.id,
-              imageUrl: user.imageUrl,
-              name: user.name,
-              profileImageUrl: user.profileImageUrl,
-              isLiked: value.liked_by_user,
-              likesCount: value.likes,
-            });
-          } else {
-            return user;
-          }
-        });
-
-        setImages(updatedImages);
-      })
-      .catch(error => console.log(error));
-  };
+  useEffect(() => {
+    dispatch(searchPhotos(valueInputWithDelay));
+  }, [dispatch, valueInputWithDelay]);
 
   const renderItem = (itemInfo: ListRenderItemInfo<PhotoModel>) => {
     const {item} = itemInfo;
@@ -108,23 +44,43 @@ const ImagesScreen = () => {
           }}
           likes={item.likesCount}
           likeFoto={() => {
-            item.isLiked ? unlike(item.id) : like(item.id);
+            item.isLiked
+              ? dispatch(unlikePhoto([item.id]))
+              : dispatch(likePhoto([item.id]));
           }}
         />
       </View>
     );
   };
 
-  const ListEmptyComponent = () => {
-    return (
-      <View style={styles.emptyContainerStyle}>
-        <Text style={styles.emptyTextStyle}>No images yet</Text>
-      </View>
-    );
+  const ListEmptyComponent = (
+    <View style={styles.emptyContainerStyle}>
+      <Text style={styles.emptyTextStyle}>No images yet</Text>
+    </View>
+  );
+
+  const ItemSeparatorComponent = () => <Stack size={20} />;
+
+  const onFocus = (): void => {
+    setIsFocusOnSearch(true);
+    if (isFocusOnSearch === false && inputValue === '') {
+      dispatch(emptyList());
+    }
   };
 
-  const ItemSeparatorComponent = () => {
-    return <Stack size={20} />;
+  const onBlur = (): void => {
+    setIsFocusOnSearch(false);
+    if (isFocusOnSearch === true && inputValue === '') {
+      dispatch(fetchPhotos(valueOrderBy));
+    }
+  };
+
+  const onChangeValueSearch = (value: string): void => {
+    setInputValue(value);
+  };
+
+  const onChangeValueDwopdown = (value: any): void => {
+    dispatch(fetchPhotos(value));
   };
 
   return (
@@ -133,14 +89,32 @@ const ImagesScreen = () => {
       backgroundColor={'darkslategrey'}
       headerProps={{
         title: 'Images',
-      }}>
+      }}
+      prepearComponent={
+        <View style={styles.viewPrepearComponent}>
+          <Dropdown
+            value={valueOrderBy}
+            setValue={setValueOrderBy}
+            onChangeValue={onChangeValueDwopdown}
+          />
+          <Stack size={5} />
+          <SearchBar
+            value={inputValue}
+            onChangeText={onChangeValueSearch}
+            onFocus={onFocus}
+            onBlur={onBlur}
+          />
+        </View>
+      }>
       <FlatList<PhotoModel>
         keyExtractor={(_, index) => String(index)}
         style={styles.flatListStyle}
-        data={images}
+        data={photos}
         renderItem={renderItem}
         ListEmptyComponent={ListEmptyComponent}
         ItemSeparatorComponent={ItemSeparatorComponent}
+        refreshing={refreshing}
+        onRefresh={() => fetchPhotos('')}
       />
     </BackgroundForm>
   );
