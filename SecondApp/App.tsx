@@ -2,6 +2,7 @@ import * as React from 'react';
 import {Button, StyleSheet, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 function FirstScreen({navigation}) {
   return (
@@ -20,13 +21,6 @@ function FirstScreen({navigation}) {
           onPress={() => navigation.navigate('ThirdScreen')}
         />
       </View>
-      <View style={styles.viewRootButtonStyle}>
-        <Button
-          color={'white'}
-          title="Modal VC4"
-          onPress={() => navigation.navigate('FourthStackScreen')}
-        />
-      </View>
     </View>
   );
 }
@@ -38,7 +32,7 @@ function SecondScreen({navigation}) {
         <Button
           color={'white'}
           title="Close"
-          onPress={() => navigation.popToTop()}
+          onPress={() => navigation.navigate('FirstScreen')}
         />
       </View>
     </View>
@@ -65,15 +59,8 @@ function FourthScreen({navigation}) {
       <View style={styles.viewButtonForPushScreenStyle}>
         <Button
           color={'white'}
-          title="Push 5 Screen"
+          title="Push VC5"
           onPress={() => navigation.navigate('FifthScreen')}
-        />
-      </View>
-      <View style={styles.viewButtonForPushScreenStyle}>
-        <Button
-          color={'white'}
-          title="Close"
-          onPress={() => navigation.goBack()}
         />
       </View>
     </View>
@@ -94,8 +81,26 @@ function FifthScreen({navigation}) {
   );
 }
 
-const Stack = createNativeStackNavigator();
+const FirstStack = createNativeStackNavigator();
 const FourthStack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
+
+function FirstStackScreen() {
+  return (
+    <FirstStack.Navigator
+      initialRouteName={'FirstScreen'}
+      screenOptions={{headerBackTitle: 'Back'}}>
+      <FirstStack.Screen name="FirstScreen" component={FirstScreen} />
+      <FirstStack.Screen name="SecondScreen" component={SecondScreen} />
+      <FirstStack.Screen name="FifthScreen" component={FifthScreen} />
+      <FirstStack.Screen
+        name="ThirdScreen"
+        component={ThirdScreen}
+        options={{presentation: 'modal'}}
+      />
+    </FirstStack.Navigator>
+  );
+}
 
 function FourthStackScreen() {
   return (
@@ -109,22 +114,10 @@ function FourthStackScreen() {
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="FirstScreen"
-        screenOptions={{headerBackTitle: 'Back'}}>
-        <Stack.Group>
-          <Stack.Screen name="FirstScreen" component={FirstScreen} />
-          <Stack.Screen name="SecondScreen" component={SecondScreen} />
-        </Stack.Group>
-        <Stack.Group screenOptions={{presentation: 'fullScreenModal'}}>
-          <Stack.Screen name="ThirdScreen" component={ThirdScreen} />
-          <Stack.Screen
-            name="FourthStackScreen"
-            component={FourthStackScreen}
-            options={{headerShown: false}}
-          />
-        </Stack.Group>
-      </Stack.Navigator>
+      <Tab.Navigator screenOptions={{headerShown: false}}>
+        <Tab.Screen name="FirstStackScreen" component={FirstStackScreen} />
+        <Tab.Screen name="FourthStackScreen" component={FourthStackScreen} />
+      </Tab.Navigator>
     </NavigationContainer>
   );
 }
